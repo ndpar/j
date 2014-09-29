@@ -3,7 +3,37 @@ load 'stats'
 load 'tables/csv'
 
 NB. =========================================================
-NB. Data functions
+NB. String functions
+
+strtodayno=: [: todayno getdate
+
+NB. =========================================================
+NB. Yahoo!Finance CSV
+
+NB. Read CSV file
+y_read_csv=: |. @: }. @: readcsv @: jpath
+
+NB. Columns in Yahoo!Finance CSV file
+y_date=:      0&{"1
+y_open=:      1&{"1
+y_high=:      2&{"1
+y_low=:       3&{"1
+y_close=:     4&{"1
+y_volume=:    5&{"1
+y_adj_close=: 6&{"1
+
+y_date_close=: y_date ,. y_adj_close
+y_dayno=: strtodayno @: > @: {."1
+
+y_between=: 4 : 0
+'from to' =. strtodayno"1 > x
+dates=. y_dayno y
+filter=. from&< *. to&>
+i=. filter dates
+i # y
+)
+
+y_price=: ". @: > @: y_adj_close
 
 NB. Extracts last column (price) from CSV file
 NB. downloaded from Yahoo!Finance
