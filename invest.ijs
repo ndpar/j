@@ -10,8 +10,11 @@ strtodayno=: [: todayno getdate
 NB. =========================================================
 NB. Yahoo!Finance CSV
 
+y_data_dir=: '~/projects/qstk/yahoo/'
+
 NB. Read CSV file
 y_read_csv=: |. @: }. @: readcsv @: jpath
+y_read_csv_symbol=: y_read_csv @: (y_data_dir&,) @: (,&'.csv')
 
 NB. Columns in Yahoo!Finance CSV file
 y_date=:      0&{"1
