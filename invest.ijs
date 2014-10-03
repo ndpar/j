@@ -102,21 +102,25 @@ NB. =========================================================
 NB. Homework 1
 
 NB.Symbols=: 'HNZ';'AXP';'HPQ';'IBM'
-NB.Allocations=: 1.0 0.0 0.0 0.0
 NB.Dates=: '2010-01-01';'2010-12-31'
+NB.homework12 1.0 0.0 0.0 0.0
 
-SPY=: cum_return y_price (Dates&y_between) y_read_csv_symbol 'SPY'
+NB.Symbols=: 'BRCM';'ADBE';'AMD';'ADI'
+NB.Dates=: '2011-01-01';'2011-12-31'
+NB.homework12 0 0 0 1
 
 Symbols=: 'AAPL';'GLD';'GOOG';'XOM'
-Allocations=: 0.4 0.4 0.0 0.2
 Dates=: '2011-01-01';'2011-12-31'
+NB.homework12 0.4 0.4 0.0 0.2
+
+SPY=: cum_return y_price (Dates&y_between) y_read_csv_symbol 'SPY'
 
 Prices=: > (y_price @: (Dates&y_between) @: y_read_csv_symbol)&.> Symbols
 
 
 homework12=: 3 : 0
   sym_cum_return=. cum_return Prices
-  sym_invest=. Allocations * sym_cum_return
+  sym_invest=. y * sym_cum_return
   fund_invest=. +/ sym_invest
   fund_cum_return=. cum_return fund_invest
   fund_daily_return=. 0 , ret fund_invest
@@ -124,10 +128,10 @@ homework12=: 3 : 0
   ADR=. mean fund_daily_return
   V=. risk fund_daily_return
   SR=. sharpe fund_daily_return
-  k=. 'Start Date';'End Date';'Symbols';'Optimal Allocations'
+  k=. 'Start Date';'End Date';'Symbols';'Allocations'
   k=. k,'Sharpe Ratio';'Volatility';'Average Daily Return';'Cumulative Return'
-  v=. (> {. Dates);(> {: Dates);Symbols;Allocations
-  v=. v,(13j11 ": SR);(16j14 ": V);(17j15 ": ADR);(13j11 ": CR)
+  v=. (> {. Dates);(> {: Dates);Symbols;y
+  v=. v,(14j11 ": SR);(17j14 ": V);(18j15 ": ADR);(14j11 ": CR)
   k ,. v
 )
 
