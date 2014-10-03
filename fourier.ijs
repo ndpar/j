@@ -10,6 +10,16 @@ iomg=: vomg ^/ i.
 idft=: +/@:(* iomg@:#) % #
 
 NB. =========================================================
+NB. Optimizations in notation
+
+NB. Matrix form of DFT
+mdft=: omg ^ (*/ -)@:i.
+dft =: +/@:(* mdft@:#)
+
+NB. Inverse DFT is 1/N times conjugate DFT
+idft=: +@:dft % #
+
+NB. =========================================================
 NB. Comparing to FFT add-on
 
 load 'math/fftw'
@@ -17,18 +27,33 @@ load 'math/fftw'
 (fftw -: dft) i.5
 (ifftw -: idft) i.5
 
-compare=: [: | dft ,: fftw
+NB. =========================================================
+NB. Tests
+
+scale=: * #
+
+NB. Classic distributions
+one  =: 100 # 1
+delta=: 1 , 99 # 0
+
+one -: fftw delta
+(scale delta) -: fftw one
+
+NB. Generic case of above distributions
+omega =: vomg 100
+sdelta=: delta |.~ - NB. shifted delta
+
+k=: 5
+(omega ^ - k) -: fftw sdelta k
+(scale sdelta k) -: fftw omega ^ k NB. almost :)
 
 NB. =========================================================
-NB. Tests. FFT works cleaner
+NB. FFT yields cleaner results
+NB. Also, FFT is O(N log N), DFT is O(N^2)
+
+square_wave=: 50 |. 100 # 0 1
 
 load 'plot'
 
-NB. FT of const function is delta
-plot compare 100 # 1
-
-NB. Should be const 1, but shown as const 100
-plot compare 100 , 99 # 0
-
-NB. Square wave
-plot compare 50 |. 100 # 0 1
+compare=: [: | dft ,: fftw
+plot compare square_wave
