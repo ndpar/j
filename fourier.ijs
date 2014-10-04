@@ -24,8 +24,8 @@ NB. Comparing to FFT add-on
 
 load 'math/fftw'
 
-(fftw -: dft) i.5
-(ifftw -: idft) i.5
+(fftw -: dft) i.8
+(ifftw -: idft) i.8
 
 NB. =========================================================
 NB. Tests
@@ -33,14 +33,14 @@ NB. Tests
 scale=: * #
 
 NB. Classic distributions
-one  =: 100 # 1
-delta=: 1 , 99 # 0
+one  =: 128 # 1
+delta=: 1 , 127 # 0
 
 one -: fftw delta
 (scale delta) -: fftw one
 
 NB. Generic case of above distributions
-omega =: vomg 100
+omega =: vomg 128
 sdelta=: delta |.~ - NB. shifted delta
 
 k=: 5
@@ -51,9 +51,12 @@ NB. =========================================================
 NB. FFT yields cleaner results
 NB. Also, FFT is O(N log N), DFT is O(N^2)
 
-square_wave=: 50 |. 100 # 0 1
-
 load 'plot'
 
 compare=: [: | dft ,: fftw
+
+square_wave=: 64 |. 128 # 0 1
 plot compare square_wave
+
+square_wave_2=: , 16 16 $ 4 |. 8 # 0 1
+plot compare square_wave_2
