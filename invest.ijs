@@ -1,45 +1,6 @@
-load 'plot'
+NB. Investment functions
+
 load 'stats'
-load 'tables/csv'
-
-NB. =========================================================
-NB. String functions
-
-strtodayno=: [: todayno getdate
-
-NB. =========================================================
-NB. Yahoo!Finance CSV
-
-y_data_dir=: '~/projects/qstk/yahoo/'
-
-NB. Read CSV file
-y_read_csv=: |. @: }. @: readcsv @: jpath
-y_read_csv_symbol=: y_read_csv @: (y_data_dir&,) @: (,&'.csv')
-
-NB. Columns in Yahoo!Finance CSV file
-y_date=:      0&{"1
-y_open=:      1&{"1
-y_high=:      2&{"1
-y_low=:       3&{"1
-y_close=:     4&{"1
-y_volume=:    5&{"1
-y_adj_close=: 6&{"1
-
-y_date_close=: y_date ,. y_adj_close
-y_dayno=: strtodayno @: > @: {."1
-
-y_between=: 4 : 0
-  'from to' =. strtodayno"1 > x
-  dates=. y_dayno y
-  filter=. from&<: *. to&>:
-  i=. filter dates
-  i # y
-)
-
-y_price=: ". @: > @: y_adj_close
-
-NB. =========================================================
-NB. Financial functions
 
 NB. Cumulative return, relative to first price
 cumret=: (1 , }. % {.)"1
@@ -65,11 +26,14 @@ sortino=: (%:@:#) * mean % nrisk
 NB. =========================================================
 NB. Examples
 
-NB.VAB=: y_price VAB_RAW=: ('2014-01-01';'2014-08-31') y_between y_read_csv_symbol 'VAB.TO'
-NB.XEF=: y_price XEF_RAW=: ('2014-01-01';'2014-08-31') y_between y_read_csv_symbol 'XEF.TO'
+load 'plot'
+load_y_ '~user/projects/yfinance.ijs'
+
+NB.VAB=: price_y_ VAB_RAW=: ('2014-01-01';'2014-08-31') between_y_ read_csv_symbol_y_ 'VAB.TO'
+NB.XEF=: price_y_ XEF_RAW=: ('2014-01-01';'2014-08-31') between_y_ read_csv_symbol_y_ 'XEF.TO'
 NB.plot VAB,:XEF
 
-NB.AAPL=: price AAPL_RAW=: y_read_csv_symbol 'AAPL'
+NB.AAPL=: price_y_ AAPL_RAW=: read_csv_symbol_y_ 'AAPL'
 NB.(i.5) { AAPL_RAW
 
 NB.Symbols=: 'HNZ';'AXP';'HPQ';'IBM'
@@ -84,7 +48,7 @@ Symbols=: 'AAPL';'GLD';'GOOG';'XOM'
 Dates=: '2011-01-01';'2011-12-31'
 NB.portfolio 0.4 0.4 0.0 0.2
 
-Prices=: > (y_price @: (Dates&y_between) @: y_read_csv_symbol)&.> Symbols
+Prices=: > (Dates&read_price_y_)&.> Symbols
 
 NB. Portfolio stats for given allocation
 portfolio=: 3 : 0
@@ -111,7 +75,7 @@ bestalloc=: 3 : 0
   {. AllAllocs \: SRs
 )
 
-SPY=: y_price (Dates&y_between) y_read_csv_symbol 'SPY'
+SPY=: Dates read_price_y_ 'SPY'
 
 NB. Plot given allocation and
 NB. compare it to SPY
