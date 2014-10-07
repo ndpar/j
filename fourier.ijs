@@ -60,3 +60,22 @@ plot compare square_wave
 
 square_wave_2=: , 16 16 $ 4 |. 8 # 0 1
 plot compare square_wave_2
+
+NB. =========================================================
+NB. FFT Implementation
+
+spl=: |:@($~ (-: , 2:)@#)
+
+omg2=: ^@:o.@:(0j1 * %) NB. Adjusted to N/2 input
+vomg2=: omg2 ^ -@:i.
+uomg=: 1 ,: vomg2@#@{.
+
+fft2=: (+/ , -/)"1
+fft=: ((+/ , -/)@(uomg * $:"1)@spl) ` fft2 @. (2 = #)
+ifft=: +@:fft % #
+
+(fft -: fftw) i.8
+(ifft -: ifftw) i.8
+
+compare=: [: | fft ,: fftw
+plot compare square_wave_2
