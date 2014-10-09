@@ -1,7 +1,7 @@
 NB. =========================================================
 NB. Discrete Fourier Transform
 
-omg =: ^@o.@(0j2 * %)
+omg =: ^@o.@(0j2&%)
 vomg=: omg ^ i.
 momg=: vomg ^/ -@i.
 dft =: +/@(* momg@#)
@@ -10,12 +10,16 @@ iomg=: vomg ^/ i.
 idft=: +/@(* iomg@#) % #
 
 NB. =========================================================
-NB. Optimizations in notation
-
 NB. Matrix form of DFT
-mdft=: omg ^ (*/ -)@i.
-dft =: +/@(* mdft@#)
 
+omg=: ^@o.@(0j2&%)
+Omg=: omg ^ (*/ -)@i.
+dft=: +/ .* Omg@#
+
+NB. =========================================================
+NB. One-liners
+
+dft=: +/ .* ^@o.@(0j2&% * (*/ -)@i.)@#
 NB. Inverse DFT is 1/N times conjugate DFT
 idft=: +@dft % #
 
