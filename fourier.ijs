@@ -69,15 +69,15 @@ NB. =========================================================
 NB. FFT Algorithm
 NB. FFT is O(N log N), DFT is O(N^2)
 
-spl=: |:@($~ (-: , 2:)@#)
+spl=: |:@(_2 ]\ ])
 
-omg2=: ^@:o.@:(0j1 * %) NB. Adjusted to N/2 input
-vomg2=: omg2 ^ -@:i.
+omg2=: ^@o.@(0j1&%) NB. Adjusted to N/2 input
+vomg2=: omg2 ^ -@i.
 uomg=: 1 ,: vomg2@#@{.
 
 fft2=: (+/ , -/)"1
-fft=: ((+/ , -/)@(uomg * $:"1)@spl) ` fft2 @. (2 = #)
-ifft=: +@:fft % #
+fft =: (+/ , -/)@(uomg * $:"1)@spl ` fft2 @. (2 = #)
+ifft=: +@fft % #
 
 (fft -: fftw) i.8
 (ifft -: ifftw) i.8
