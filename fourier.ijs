@@ -10,7 +10,7 @@ iomg=: vomg ^/ i.
 idft=: +/@(* iomg@#) % #
 
 NB. =========================================================
-NB. Matrix form of DFT
+NB. Matrix form of DFT, O(N^2)
 
 omg=: ^@o.@(0j2&%)
 Omg=: omg ^ (*/ -)@i.
@@ -46,13 +46,12 @@ both=: |@(,: dft)
 plot both square_wave_2
 
 NB. =========================================================
-NB. Tests
-
-scale=: * #
-
 NB. Classic distributions
+
 one  =: 128 # 1
 delta=: 1 , 127 # 0
+
+scale=: * #
 
 one -: dft delta
 (scale delta) -: dft one NB. almost
@@ -66,8 +65,7 @@ k=: 5
 (scale sdelta k) -: dft omega ^ k NB. almost
 
 NB. =========================================================
-NB. FFT Algorithm
-NB. FFT is O(N log N), DFT is O(N^2)
+NB. FFT Algorithm, O(N log N)
 
 spl=: |:@(_2 ]\ ])
 
