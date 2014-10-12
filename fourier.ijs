@@ -68,13 +68,11 @@ NB. =========================================================
 NB. FFT Algorithm, O(N log N)
 
 spl=: |:@(_2 ]\ ])
+omg=: ^@o.@(0j1&%) NB. Adjusted to N/2 input
+omv=: omg ^ -@i.
+Omg=: 1 ,: omv
+fft=: (+/ , -/)@(Omg@#@{. * $:"1)@spl ` ] @. (1 = #)
 
-omg2=: ^@o.@(0j1&%) NB. Adjusted to N/2 input
-vomg2=: omg2 ^ -@i.
-uomg=: 1 ,: vomg2@#@{.
-
-fft2=: (+/ , -/)"1
-fft =: (+/ , -/)@(uomg * $:"1)@spl ` fft2 @. (2 = #)
 ifft=: +@fft % #
 
 (fft -: fftw) i.8
