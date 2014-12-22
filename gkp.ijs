@@ -13,9 +13,9 @@ NB. J implementation of the solution (1.18)
 recur=: 4 : 0
 'c ab' =. x
 assert. # c
-d=. {: $ 'a b' =. ab
+d=. {: $ ab
 m=. <: # n=. d radix y
-c #. n {"0 1 a , ($~ m , #) b
+c #. n {"0 1 (1 , m) # ab
 )
 
 recurr=: recur"_ 0
