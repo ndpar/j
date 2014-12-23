@@ -32,3 +32,15 @@ NB. http://mathworld.wolfram.com/JosephusProblem.html
 sjosephus=: ]`([ $: }:@|.)@.(1 < #@])
 josephus=: [ sjosephus >:@i.@]
 3 josephus 41
+
+NB. Exercises
+
+h=: b`(p,.q,.r,.s,.p)@.c
+c=: 0 < [
+b=: 2 0 $ ]
+p=: <:@[ h ]
+r=: |."1@|.@p
+q=: 2 1 $ 1 A. ]
+s=: 2 1 $ 5 A. ]
+
+2 h 'ABC'
