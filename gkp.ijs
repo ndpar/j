@@ -33,14 +33,20 @@ sjosephus=: ]`([ $: }:@|.)@.(1 < #@])
 josephus=: [ sjosephus >:@i.@]
 3 josephus 41
 
+NB. =========================================================
 NB. Exercises
+NB. =========================================================
 
-h=: b`(p,.q,.r,.s,.p)@.c
+NB. Exercise 1.1
+NB. The Tower of Hanoi, if A<->B is disallowed
+NB. Number of moves = 3^n-1
+
+h=: b`(p,q,r,s,p)@.c
 c=: 0 < [
-b=: 2 0 $ ]
+b=: 0 2 $ ]
 p=: <:@[ h ]
 r=: |."1@|.@p
-q=: 2 1 $ 1 A. ]
-s=: 2 1 $ 5 A. ]
+q=: 2 $ 1 A. ]
+s=: 2 $ 5 A. ]
 
 2 h 'ABC'
