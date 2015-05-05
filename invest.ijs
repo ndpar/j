@@ -85,3 +85,16 @@ plot_with_spy=: 3 : 0
   plot CR,:CRSPY
   {: CR
 )
+
+NB. --------------------------------------------
+NB. ISIN Builder
+NB. NB. http://en.wikipedia.org/wiki/International_Securities_Identification_Number
+
+C=: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+splt=: C i. ' ' delstring ":
+checksum=: 3 : '10| 10- 10| +/ splt , 2 1* |: _2]\ |. splt C i. y'
+
+assert 5 = checksum 'US037833100'
+assert 0 = checksum 'US037833107'
+assert 3 = checksum 'AU0000VXGZA'
+assert 6 = checksum 'GB000263494'
