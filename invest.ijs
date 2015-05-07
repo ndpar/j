@@ -87,14 +87,22 @@ plot_with_spy=: 3 : 0
 )
 
 NB. --------------------------------------------
-NB. ISIN Builder
-NB. NB. http://en.wikipedia.org/wiki/International_Securities_Identification_Number
+NB. ISIN and CUSIP Builders
+NB. http://en.wikipedia.org/wiki/International_Securities_Identification_Number
+NB. http://en.wikipedia.org/wiki/CUSIP
 
-C=: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-splt=: C i. ' ' delstring ":
-checksum=: 3 : '10| 10- 10| +/ splt , 2 1* |: _2]\ |. splt C i. y'
+luhn=: 10 | 10 - 10 | [: +/ [: +/ 10 10 #: [: (* 2 1 $~ $) |.
 
-assert 5 = checksum 'US037833100'
-assert 0 = checksum 'US037833107'
-assert 3 = checksum 'AU0000VXGZA'
-assert 6 = checksum 'GB000263494'
+C=: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ*@#'
+checksum=: [: luhn C&i.
+
+isin_checksum=: [: checksum [: (' ' delstring ":) C&i.
+
+assert 5 = isin_checksum 'US037833100'
+assert 3 = isin_checksum 'AU0000VXGZA'
+assert 6 = isin_checksum 'GB000263494'
+
+cusip_checksum=: checksum
+
+assert 0 = cusip_checksum '03783310'
+assert 1 = cusip_checksum '45920010'
