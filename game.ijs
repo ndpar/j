@@ -2,16 +2,15 @@ NB. =========================================================
 NB. Game Theory Functions
 NB. =========================================================
 
-] votes =: 5 4 $ 'BCADBDCADCABADBCADCB'
+NB. Sorted list of candidates from votes
+candidates =: /:~@~.@,
 
 NB. Borda Counts
 borda =: 3 : 0
-  cand =. /:~ ~. , y
+  cand =. candidates y
   w =. |. i. # cand
-  cand ; +/ w * |: +/"2 cand =/ y
+  (\:~ rank) (,&<"0) cand \: rank =. +/ w * |: +/"2 cand =/ y
 )
-
-borda votes
 
 NB. Condorcet comparison
 cond_comp =: 1 : 0
@@ -21,9 +20,18 @@ cond_comp =: 1 : 0
 )
 NB. Condorcet matrix
 cond_matrix =: 3 : 0
-  cand =. /:~ ~. , y
+  cand =. candidates y
   f =. (y cond_comp)"0
   f/~ cand
 )
+NB. Condorcet winner
+condorcet =: 3 : 0
+  cand =. candidates y
+  maj =. -: # y
+  rank =. (= <:@#) +/"1 maj < cm =. cond_matrix y
+  cm ; < rank (,&<"0) cand
+)
 
-cond_matrix votes
+] votes =: 5 4 $ 'BCADBDCADCABADBCADCB'
+borda votes
+condorcet votes
